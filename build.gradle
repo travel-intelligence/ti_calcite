@@ -1,0 +1,35 @@
+apply plugin: 'scala'
+apply plugin: 'application'
+
+mainClassName = "com.amadeus.ti.calcite.PlayGround"
+
+repositories {
+  mavenCentral()
+  maven {
+    url "http://conjars.org/repo"
+  }
+}
+
+dependencies {
+  compile 'org.zeromq:jeromq:0.3.5'
+  compile 'org.apache.calcite:calcite-core:1.7.0'
+  compile "org.scala-lang:scala-library:2.11.8"
+  compile 'org.scalaz:scalaz-core_2.11:7.2.0'
+  compile 'io.argonaut:argonaut_2.11:6.2-M1'
+}
+
+dependencies {
+  testCompile "org.specs2:specs2-core_2.11:3.7.3"
+  testCompile "org.specs2:specs2-junit_2.11:3.7.3"
+}
+
+task specs(type: JavaExec, dependsOn: testClasses) {
+  main = 'org.specs2.runner.files'
+  args = ['console']
+  classpath sourceSets.main.runtimeClasspath
+  classpath sourceSets.test.runtimeClasspath
+  classpath configurations.testRuntime
+  classpath configurations.runtime
+}
+
+test.dependsOn specs
