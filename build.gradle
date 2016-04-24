@@ -1,7 +1,7 @@
 apply plugin: 'scala'
 apply plugin: 'application'
 
-mainClassName = "com.amadeus.ti.calcite.PlayGround"
+mainClassName = "com.amadeus.ti.calcite.ZMQServer"
 
 repositories {
   mavenCentral()

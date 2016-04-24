@@ -1,5 +1,8 @@
 package com.amadeus.ti.calcite
 
+import scalaz._, Scalaz._
+import argonaut._, Argonaut._
+
 import org.apache.calcite.sql.`type`.SqlTypeName
 
 import org.specs2.mutable.Specification
@@ -23,9 +26,9 @@ object SchemaParserSpec extends Specification {
   }]
 }
 """
-    val maybeASchema = parse(json)
+    val schema = Parse.decodeOption[Schema](json)
 
-    maybeASchema must_== Some(
+    schema must_== Some(
         Schema("HR", List(
           Table("EMPS", List(
             Column("EMPID", SqlTypeName.INTEGER),
