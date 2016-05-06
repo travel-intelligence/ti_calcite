@@ -1,0 +1,8 @@
+---
+name: ti-calcite
+version: 0.0.1
+iteration: 1
+arch: amd64
+description: Travel Intelligence SQL backend.
+dependencies:
+hooks:

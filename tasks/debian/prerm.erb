@@ -1,0 +1,43 @@
+#!/bin/sh
+
+# summary of how this script can be called:
+#        * <prerm> `remove'
+#        * <old-prerm> `upgrade' <new-version>
+#        * <new-prerm> `failed-upgrade' <old-version>
+#        * <conflictor's-prerm> `remove' `in-favour' <package> <new-version>
+#        * <deconfigured's-prerm> `deconfigure' `in-favour'
+#          <package-being-installed> <version> `removing'
+#          <conflicting-package> <version>
+# for details, see http://www.debian.org/doc/debian-policy/ or
+# the debian-policy package
+
+set -e
+
+case "$1" in
+  remove|deconfigure)
+    <%= cmd_service_stop(app_service) %> || \
+      echo "Error while trying to stop the application service"
+    <%= cmd_service_disable(app_service) %> || \
+      echo "Error while trying to disable the application service"
+
+    <% config_files.each do |cfg| %>
+    rm -f '<%= File.join(app_lib_path, "config", cfg) %>'<% end %>
+    rm -f '<%= File.join(app_lib_path, "log") %>'
+    rm -f '<%= File.join(app_lib_path, "tmp") %>'
+  ;;
+
+  upgrade)
+    <%= cmd_service_stop(app_service) %> || \
+      echo "Error while trying to stop the application service"
+  ;;
+
+  failed-upgrade)
+  ;;
+
+  *)
+    echo "prerm called with unknown argument \`$1'" >&2
+    exit 1
+  ;;
+esac
+
+exit 0

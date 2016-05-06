@@ -1,0 +1,16 @@
+#!/bin/sh
+case "$1" in
+  removing)
+    <%= cmd_service_force_stop(app_service) %> || echo "Error while trying to stop the application service"
+  ;;
+
+  upgrading)
+    echo "Keep the service running for upgrade" >&2
+  ;;
+
+  *)
+    echo "Warning: prerm part called with invalid argument" >&2
+  ;;
+esac
+
+exit 0

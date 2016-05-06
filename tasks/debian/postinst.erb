@@ -1,0 +1,41 @@
+#!/bin/sh
+
+# summary of how this script can be called:
+#        * <postinst> `configure' <most-recently-configured-version>
+#        * <old-postinst> `abort-upgrade' <new version>
+#        * <conflictor's-postinst> `abort-remove' `in-favour' <package>
+#          <new-version>
+#        * <postinst> `abort-remove'
+#        * <deconfigured's-postinst> `abort-deconfigure' `in-favour'
+#          <failed-install-package> <version> `removing'
+#          <conflicting-package> <version>
+# for details, see http://www.debian.org/doc/debian-policy/ or
+# the debian-policy package
+
+set -e
+
+case "$1" in
+  configure)
+    <% config_files.each do |cfg| %>
+    ln -sf '<%= File.join(app_etc_path, cfg) %>' '<%= File.join(app_lib_path, "config", cfg) %>'<% end %>
+    if [ ! -d <%= File.join(app_lib_path, "log") %> ]; then
+      ln -sf '<%= app_log_path %>' '<%= File.join(app_lib_path, "log") %>'
+    fi
+    if [ ! -d <%= File.join(app_lib_path, "tmp") %> ]; then
+      ln -sf '<%= app_run_path %>' '<%= File.join(app_lib_path, "tmp") %>'
+    fi
+
+    <%= cmd_service_setup(app_service) %> || echo "Error while reloading service configuration"
+    <%= cmd_service_start(app_service) %> || echo "Error while trying to start the application service"
+  ;;
+
+  abort-upgrade|abort-remove|abort-deconfigure)
+  ;;
+
+  *)
+    echo "postinst called with unknown argument \`$1'" >&2
+    exit 1
+  ;;
+esac
+
+exit 0
