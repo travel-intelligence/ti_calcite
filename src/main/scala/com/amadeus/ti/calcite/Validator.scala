@@ -5,7 +5,7 @@ import scala.util.{Try,Failure,Success}
 import org.apache.calcite.jdbc.CalciteSchema
 import org.apache.calcite.jdbc.JavaTypeFactoryImpl
 
-import org.apache.calcite.sql.SqlDialect
+import org.apache.calcite.sql.{SqlDialect,SqlKind}
 import org.apache.calcite.sql.parser.SqlParser
 import org.apache.calcite.sql.pretty.SqlPrettyWriter
 import org.apache.calcite.sql.validate.SqlValidatorUtil
@@ -20,7 +20,8 @@ object Validator {
 
     val types = new JavaTypeFactoryImpl()
 
-    var rootSchema = CalciteSchema.createRootSchema(false)
+    // Create a root schema without metadata and without caching
+    var rootSchema = CalciteSchema.createRootSchema(false, false)
 
     request.schemas.foreach { case s => rootSchema.add(s.name, s) }
 
@@ -34,7 +35,7 @@ object Validator {
       types)
 
     val result = for {
-      rawAst <- Try(parser.parseQuery)
+      rawAst <- Try(parser.parseStmt) if rawAst.isA(SqlKind.QUERY)
       validAst <- Try(validator.validate(rawAst))
     } yield validAst
 
