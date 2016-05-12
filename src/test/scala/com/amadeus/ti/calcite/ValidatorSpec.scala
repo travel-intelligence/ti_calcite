@@ -29,11 +29,18 @@ object ValidatorSpec extends Specification {
 
   def expect_valid(sql: String) = statement(sql).valid must beTrue
 
-  "validating and normalizing a correct query" >> {
-    val response = statement("select EMPID from HR.EMPS")
+  def expect_normalized(sql: String, fmt: String) = {
+    val response = statement(sql)
     response.valid must beTrue
-    response.sql must_== """SELECT `EMPID`
-FROM `HR`.`EMPS`"""
+    response.sql must_== fmt
+  }
+
+  "validating and normalizing a correct query" >> {
+    expect_normalized(
+      "select EMPID from HR.EMPS limit 10",
+      """SELECT `EMPID`
+FROM `HR`.`EMPS`
+LIMIT 10""")
   }
 
   "rejecting a query on an unknown table" >> {
@@ -68,7 +75,7 @@ FROM `HR`.`EMPS`"""
 
   "rejecting a describe statement" >> {
     expect_non_query_error("DESCRIBE TABLE HR.EMPS")
-  }.pendingUntilFixed("not implemented yet")
+  }
 
   "rejecting an insert statement" >> {
     expect_non_query_error("INSERT INTO HR.EMPS (EMPID) SELECT EMPID FROM HR.EMPS")

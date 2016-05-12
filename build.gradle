@@ -4,6 +4,7 @@ apply plugin: 'application'
 mainClassName = "com.amadeus.ti.calcite.ZMQServer"
 
 repositories {
+  mavenLocal()
   mavenCentral()
   maven {
     url "http://conjars.org/repo"
@@ -12,7 +13,7 @@ repositories {
 
 dependencies {
   compile 'org.zeromq:jeromq:0.3.5'
-  compile 'org.apache.calcite:calcite-core:1.7.0'
+  compile 'org.apache.calcite:calcite-core:1.8.0-SNAPSHOT'
   compile "org.scala-lang:scala-library:2.11.8"
   compile 'org.scalaz:scalaz-core_2.11:7.2.0'
   compile 'io.argonaut:argonaut_2.11:6.2-M1'
