@@ -49,16 +49,64 @@ LIMIT 10""")
     response.hint must contain("Table 'HR.NOT_A_TABLE' not found")
   }
 
-  "validating a join query" >> {
-    expect_valid("select e.EMPID, e.EMPNAME, e.DEPTNO from HR.EMPS e inner join HR.DEPTS d on (e.DEPTNO = d.DEPTNO) where e.EMPNAME like '%JON%'")
+  "validating a LIKE function" >> {
+    expect_valid("select EMPNAME from HR.EMPS where EMPNAME like '%JON%'")
+  }
+
+  "validating an inner join query" >> {
+    expect_valid("select e.EMPID, e.EMPNAME, e.DEPTNO from HR.EMPS e inner join HR.DEPTS d on (e.DEPTNO = d.DEPTNO)")
+  }
+
+  "validating a full outer join query" >> {
+    expect_valid("select e.EMPID, e.EMPNAME, e.DEPTNO from HR.EMPS e full outer join HR.DEPTS d on (e.DEPTNO = d.DEPTNO)")
   }
 
   "validating a union query" >> {
     expect_valid("select EMPID from HR.EMPS union select DEPTNO from HR.DEPTS")
   }
 
+  "validating a query using WITH" >> {
+    expect_valid("with sub_table as (select EMPID from HR.EMPS) select * from sub_table")
+  }
+
   "validating an aggregated query" >> {
     expect_valid("select EMPNAME, sum(DEPTNO) as TOTAL from HR.EMPS group by EMPNAME order by TOTAL desc limit 10")
+  }
+
+  "validating a HAVING clause" >> {
+    expect_valid("select EMPNAME, sum(DEPTNO) from HR.EMPS group by EMPNAME having sum(DEPTNO) > 0")
+  }
+
+  "validating an AVG aggregation function" >> {
+    expect_valid("select EMPNAME, avg(DEPTNO) from HR.EMPS group by EMPNAME")
+  }
+
+  "validating a COUNT aggregation function" >> {
+    expect_valid("select EMPNAME, count(DEPTNO) from HR.EMPS group by EMPNAME")
+  }
+
+  "validating a FIRST aggregation function" >> {
+    expect_valid("select EMPNAME, first(DEPTNO) from HR.EMPS group by EMPNAME")
+  }
+
+  "validating a LAST aggregation function" >> {
+    expect_valid("select EMPNAME, last(DEPTNO) from HR.EMPS group by EMPNAME")
+  }
+
+  "validating a MAX aggregation function" >> {
+    expect_valid("select EMPNAME, max(DEPTNO) from HR.EMPS group by EMPNAME")
+  }
+
+  "validating a MIN aggregation function" >> {
+    expect_valid("select EMPNAME, min(DEPTNO) from HR.EMPS group by EMPNAME")
+  }
+
+  "validating a SUM aggregation function" >> {
+    expect_valid("select EMPNAME, sum(DEPTNO) from HR.EMPS group by EMPNAME")
+  }
+
+  "validating a ROUND scalar function" >> {
+    expect_valid("select EMPNAME, round(DEPTNO) from HR.EMPS")
   }
 
   "rejecting a set statement" >> {

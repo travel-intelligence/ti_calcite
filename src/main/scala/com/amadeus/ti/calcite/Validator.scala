@@ -70,7 +70,7 @@ object Validator {
         val pp = new SqlPrettyWriter(impalaDialect)
         val fmt = pp.format(ast)
 
-        ValidationResponse(true, fmt, "")        
+        ValidationResponse(true, fmt, "")
       }
     }
   }

@@ -12,16 +12,16 @@ repositories {
 }
 
 dependencies {
-  compile 'org.zeromq:jeromq:0.3.5'
+  compile 'org.zeromq:jeromq:0.3.6'
   compile 'org.apache.calcite:calcite-core:1.8.0-SNAPSHOT'
   compile "org.scala-lang:scala-library:2.11.8"
-  compile 'org.scalaz:scalaz-core_2.11:7.2.0'
-  compile 'io.argonaut:argonaut_2.11:6.2-M1'
+  compile 'org.scalaz:scalaz-core_2.11:7.2.6'
+  compile 'io.argonaut:argonaut_2.11:6.2-M3'
 }
 
 dependencies {
-  testCompile "org.specs2:specs2-core_2.11:3.7.3"
-  testCompile "org.specs2:specs2-junit_2.11:3.7.3"
+  testCompile "org.specs2:specs2-core_2.11:3.8.5.1"
+  testCompile "org.specs2:specs2-junit_2.11:3.8.5.1"
 }
 
 task specs(type: JavaExec, dependsOn: testClasses) {
