@@ -17,7 +17,7 @@ object ValidatorSpec extends Specification {
 
   def statement(sql: String) = {
     val response = Validator(ValidationRequest(sql, List(hr)))
-    // println(sql + " : " + response.sql + " : " + response.hint)
+    // println("SQL statement: " + sql + " - Validated: " + response.sql + " - Hint: " + response.hint)
     response
   }
 
@@ -37,9 +37,10 @@ object ValidatorSpec extends Specification {
 
   "validating and normalizing a correct query" >> {
     expect_normalized(
-      "select EMPID from HR.EMPS limit 10",
+      "select EMPID from HR.EMPS order by EMPID limit 10",
       """SELECT `EMPID`
 FROM `HR`.`EMPS`
+ORDER BY `EMPID`
 LIMIT 10""")
   }
 
@@ -85,12 +86,12 @@ LIMIT 10""")
     expect_valid("select EMPNAME, count(DEPTNO) from HR.EMPS group by EMPNAME")
   }
 
-  "validating a FIRST aggregation function" >> {
-    expect_valid("select EMPNAME, first(DEPTNO) from HR.EMPS group by EMPNAME")
+  "validating a FIRST_VALUE aggregation function" >> {
+    expect_valid("select EMPNAME, first_value(EMPNAME) over(order by EMPNAME) from HR.EMPS group by EMPNAME")
   }
 
-  "validating a LAST aggregation function" >> {
-    expect_valid("select EMPNAME, last(DEPTNO) from HR.EMPS group by EMPNAME")
+  "validating a LAST_VALUE aggregation function" >> {
+    expect_valid("select EMPNAME, last_value(EMPNAME) over(order by EMPNAME) from HR.EMPS group by EMPNAME")
   }
 
   "validating a MAX aggregation function" >> {
