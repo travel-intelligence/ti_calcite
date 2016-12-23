@@ -110,6 +110,22 @@ LIMIT 10""")
     expect_valid("select EMPNAME, round(DEPTNO) from HR.EMPS")
   }
 
+  "validating a SUBSTR function with no end" >> {
+    expect_valid("select substr(EMPNAME, 4) from HR.EMPS")
+  }
+
+  "validating a SUBSTR function with an end" >> {
+    expect_valid("select substr(EMPNAME, 4, 8) from HR.EMPS")
+  }
+
+  "validating a CONCAT function without column names" >> {
+    expect_valid("select concat('a', 'b') from HR.EMPS")
+  }
+
+  "validating a CONCAT function with column names" >> {
+    expect_valid("select concat('a', EMPNAME, 'b') from HR.EMPS")
+  }
+
   "rejecting a set statement" >> {
     expect_non_query_error("SET x = 1")
   }
