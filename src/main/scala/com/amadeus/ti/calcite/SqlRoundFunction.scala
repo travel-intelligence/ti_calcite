@@ -14,7 +14,7 @@ import org.apache.calcite.sql.fun.SqlMonotonicUnaryFunction;
 import com.google.common.base.Preconditions;
 
 /**
- * Definition of the "ROUND" SQL functions.
+ * Definition of the "ROUND" SQL function.
  */
 class SqlRoundFunction extends SqlMonotonicUnaryFunction(
   "ROUND",
