@@ -30,15 +30,6 @@ class SqlRoundFunction extends SqlMonotonicUnaryFunction(
       OperandTypes.family(SqlTypeFamily.INTEGER)
     )
   ),
-  // OperandTypes.or(OperandTypes.NUMERIC_OR_INTERVAL,
-  //   OperandTypes.sequence(
-  //     "'ROUND(<DATE> TO <TIME_UNIT>)'\n"
-  //     + "'ROUND(<TIME> TO <TIME_UNIT>)'\n"
-  //     + "'ROUND(<TIMESTAMP> TO <TIME_UNIT>)'",
-  //     OperandTypes.DATETIME,
-  //     OperandTypes.ANY
-  //   )
-  // ),
   SqlFunctionCategory.NUMERIC) {
   //~ Methods ----------------------------------------------------------------
 
