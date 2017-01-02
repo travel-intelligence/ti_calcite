@@ -10,7 +10,9 @@ object ValidatorSpec extends Specification {
              Table("EMPS", List(
                Column("EMPID", SqlTypeName.INTEGER),
                Column("EMPNAME", SqlTypeName.VARCHAR),
-               Column("DEPTNO", SqlTypeName.INTEGER))),
+               Column("DEPTNO", SqlTypeName.INTEGER),
+               Column("SIZE", SqlTypeName.DOUBLE),
+               Column("WEIGHT", SqlTypeName.DECIMAL))),
              Table("DEPTS", List(
                Column("DEPTNO", SqlTypeName.INTEGER)))
              ))
@@ -106,8 +108,16 @@ LIMIT 10""")
     expect_valid("select EMPNAME, sum(DEPTNO) from HR.EMPS group by EMPNAME")
   }
 
-  "validating a ROUND scalar function" >> {
-    expect_valid("select EMPNAME, round(DEPTNO) from HR.EMPS")
+  "validating a ROUND(double) scalar function" >> {
+    expect_valid("select EMPNAME, round(SIZE) from HR.EMPS")
+  }
+
+  "validating a ROUND(double, int) scalar function" >> {
+    expect_valid("select EMPNAME, round(SIZE, 5) from HR.EMPS")
+  }
+
+  "validating a ROUND(decimal, int) scalar function" >> {
+    expect_valid("select EMPNAME, round(WEIGHT, 5) from HR.EMPS")
   }
 
   "validating a SUBSTR function with no end" >> {
