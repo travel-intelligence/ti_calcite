@@ -33,13 +33,14 @@ object Validator {
 
   def apply(request: ValidationRequest): ValidationResponse = {
 
-    // val parser = SqlParser.create(request.sql)
-    val parser = SqlParser.create(request.sql,
-        SqlParser.configBuilder()
+    val parser = SqlParser.create(
+      request.sql,
+      SqlParser.configBuilder()
             .setQuoting(quoting)
             .setUnquotedCasing(unquotedCasing)
             .setQuotedCasing(quotedCasing)
-            .build())
+            .build()
+    )
 
     val types = new JavaTypeFactoryImpl()
 
@@ -48,8 +49,12 @@ object Validator {
 
     request.schemas.foreach { case s => rootSchema.add(s.name, s) }
 
+    var opTable = SqlStdOperatorTable.instance()
+    opTable.register(new SqlRoundFunction)
+    opTable.register(new SqlConcatFunction)
+
     var validator = SqlValidatorUtil.newValidator(
-      SqlStdOperatorTable.instance(),
+      opTable,
       new CalciteCatalogReader(
         rootSchema,
         false,
@@ -70,7 +75,7 @@ object Validator {
         val pp = new SqlPrettyWriter(impalaDialect)
         val fmt = pp.format(ast)
 
-        ValidationResponse(true, fmt, "")        
+        ValidationResponse(true, fmt, "")
       }
     }
   }

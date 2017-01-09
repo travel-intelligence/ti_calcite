@@ -120,10 +120,10 @@ package_path = File.join build_path, package_name
 directory build_path
 
 namespace :ti_calcite do
- 
+
   desc "Build the distribution files of #{app_name}."
   task :distribution => build_path do
-  
+
     directories.each do |d|
       dist_dir = File.join build_path, d
       mkdir_p dist_dir
@@ -140,13 +140,13 @@ namespace :ti_calcite do
       File.open(target, 'w') { |f| f.write erb.result(binding) }
       chmod (mode || 0755), target
     end
-  
+
     app_pathname = Pathname.new app_path
 
     resources.each do |resource|
       dirs = []
       files = []
-    
+
       FileList[File.join app_path, resource].each do |source|
         if File.exist? source
           relsrc = Pathname.new(source).relative_path_from app_pathname
@@ -158,12 +158,12 @@ namespace :ti_calcite do
           end
         end
       end
-      
+
       dirs.each do |d|
         target = File.join build_path, app_lib_path, d
         mkdir_p target
       end
-      
+
       files.each do |f|
         source = File.join app_path, f
         target = File.join build_path, app_lib_path, f
@@ -184,7 +184,7 @@ namespace :ti_calcite do
   task :package => 'ti_calcite:distribution' do
 
     fpm_bin = "bundle exec fpm"
-    
+
     # Compute relative paths without trailing './'
     root_pathname = Pathname.new('/')
     rel_dirs = directories.map do |d|
@@ -214,9 +214,9 @@ namespace :ti_calcite do
               " --description \"#{app_description}\"" \
               " --exclude \"*/vendor/cache/*\"" \
               " -t deb -s dir #{rel_dirs.join ' '}"
-    
+
     rm_f package_path
-    
+
     shellout fpm_cmd, build_path
 
     manifest_file = File.join build_path, "manifest"
