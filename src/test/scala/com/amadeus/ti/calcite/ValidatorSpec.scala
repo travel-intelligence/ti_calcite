@@ -19,7 +19,7 @@ object ValidatorSpec extends Specification {
 
   def statement(sql: String) = {
     val response = Validator(ValidationRequest(sql, List(hr)))
-    println("SQL statement: " + sql + " - Validated: " + response.sql + " - Hint: " + response.hint)
+    // println("SQL statement: " + sql + " - Validated: " + response.sql + " - Hint: " + response.hint)
     response
   }
 
