@@ -120,12 +120,26 @@ LIMIT 10""")
     expect_valid("select EMPNAME, round(WEIGHT, 5) from HR.EMPS")
   }
 
-  "validating a SUBSTRING function with no end" >> {
-    expect_valid("select substring(EMPNAME, 4) from HR.EMPS")
+  "validating a SUBSTR function with no end" >> {
+    expect_valid("select substr(EMPNAME, 4) from HR.EMPS")
   }
 
-  "validating a SUBSTRING function with an end" >> {
-    expect_valid("select substring(EMPNAME, 4, 8) from HR.EMPS")
+  "validating and normalizing a SUBSTR function with no end" >> {
+    expect_normalized(
+      "select substr(EMPNAME, 4) from HR.EMPS",
+      """SELECT SUBSTR(`EMPNAME`, 4)
+FROM `HR`.`EMPS`""")
+  }
+
+  "validating a SUBSTR function with an end" >> {
+    expect_valid("select substr(EMPNAME, 4, 8) from HR.EMPS")
+  }
+
+  "validating and normalizing a SUBSTR function with an end" >> {
+    expect_normalized(
+      "select substr(EMPNAME, 4, 8) from HR.EMPS",
+      """SELECT SUBSTR(`EMPNAME`, 4, 8)
+FROM `HR`.`EMPS`""")
   }
 
   "validating a CONCAT function without column names" >> {
