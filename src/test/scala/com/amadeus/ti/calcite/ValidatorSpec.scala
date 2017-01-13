@@ -108,6 +108,14 @@ LIMIT 10""")
     expect_valid("select EMPNAME, sum(DEPTNO) from HR.EMPS group by EMPNAME")
   }
 
+  "validating a GROUP_CONCAT aggregation function" >> {
+    expect_valid("select GROUP_CONCAT(EMPNAME) from HR.EMPS")
+  }
+
+  "validating a GROUP_CONCAT aggregation function with separator" >> {
+    expect_valid("select GROUP_CONCAT(EMPNAME, '---') from HR.EMPS")
+  }
+
   "validating a ROUND(double) scalar function" >> {
     expect_valid("select EMPNAME, round(SIZE) from HR.EMPS")
   }

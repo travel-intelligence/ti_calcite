@@ -53,6 +53,7 @@ object Validator {
     opTable.register(new SqlRoundFunction)
     opTable.register(new SqlConcatFunction)
     opTable.register(new SqlSubstrFunction)
+    opTable.register(new SqlGroupConcatFunction)
 
     var validator = SqlValidatorUtil.newValidator(
       opTable,
