@@ -24,11 +24,11 @@ class SqlGroupConcatFunction extends SqlAggFunction(
   null,
   OperandTypes.or(
     OperandTypes.sequence(
-      "'SUBSTR(<VARCHAR>)'\n",
+      "'GROUP_CONCAT(<VARCHAR>)'\n",
       OperandTypes.STRING
     ),
     OperandTypes.sequence(
-      "'SUBSTR(<VARCHAR>, <VARCHAR>)'\n",
+      "'GROUP_CONCAT(<VARCHAR>, <VARCHAR>)'\n",
       OperandTypes.STRING,
       OperandTypes.STRING
     )
