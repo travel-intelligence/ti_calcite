@@ -100,3 +100,10 @@ gradle uberjar
 ```
 
 The jar file will be available in `./build/libs`.
+
+## Package the Jar as a Debian package
+
+```bash
+bundle install
+bundle exec rake ti_calcite:package
+```
