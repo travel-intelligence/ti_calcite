@@ -29,7 +29,7 @@ class ProcessorSpec extends Specification {
     response must_== """{
   "validation" : {
     "valid" : true,
-    "sql" : "SELECT `EMPNAME`\nFROM `HR`.`EMPS`",
+    "sql" : "SELECT `EMPS`.`EMPNAME`\nFROM `HR`.`EMPS` `EMPS`",
     "hint" : ""
   }
 }"""

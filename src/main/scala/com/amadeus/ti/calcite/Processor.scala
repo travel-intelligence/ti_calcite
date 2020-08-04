@@ -1,6 +1,5 @@
 package com.amadeus.ti.calcite
 
-import scalaz._, Scalaz._
 import argonaut._, Argonaut._
 
 import ValidationRequestParser._
